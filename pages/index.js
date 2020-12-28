@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { todoList } from '../actions';
@@ -10,9 +11,12 @@ const Index = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <div>
+      <Head>
+        <title>TinyList</title>
+      </Head>
       <Todo />
-    </>
+    </div>
   );
 };
 
