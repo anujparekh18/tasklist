@@ -55,8 +55,8 @@ const Counter = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center overflow-hidden">
-      <div className="bg-red-500 text-white text-center lg:text-left shadow-lg font-medium py-2 pl-4 h-full w-full">
+    <div className="flex flex-col items-center justify-center overflow-hidden bg-white">
+      <div className="bg-red-500 text-white text-center lg:text-left shadow-md font-medium py-2 pl-4 h-full w-full">
         TinyList
       </div>
       <div className="my-3 lg:w-1/3">
@@ -72,7 +72,7 @@ const Counter = () => {
           onKeyDown={(e) => handleNewTodo(e)}
         />
       </div>
-      <ul className="w-screen">
+      <ul className="w-screen h-screen">
         {sortedUncompletedList &&
           sortedUncompletedList.map((item) => (
             <li
