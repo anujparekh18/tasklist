@@ -7,6 +7,7 @@ import {
   completeTodo,
   uncompleteTodo,
 } from '../actions';
+import FlipMove from 'react-flip-move';
 
 const Counter = () => {
   const [inputId, setInputId] = useState(0);
@@ -73,75 +74,84 @@ const Counter = () => {
         />
       </div>
       <ul className="w-screen h-screen">
-        {sortedUncompletedList &&
-          sortedUncompletedList.map((item) => (
-            <li
-              key={item.id}
-              className="flex justify-between w-2/3 lg:w-1/3 mx-auto mt-2 rounded-md cursor-pointer group h-10 lg:hover:bg-red-300"
-            >
-              <div className="flex w-full items-center rounded-md pl-2">
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 ml-5 float-left cursor-pointer checked:bg-blue-600 checked:border-transparent"
-                  onChange={() => dispatch(completeTodo(item.id))}
-                />
+        <FlipMove
+          enterAnimation="accordionVertical"
+          leaveAnimation="accordionVertical"
+          duration={350}
+          easing="ease-in-out"
+        >
+          {sortedUncompletedList &&
+            sortedUncompletedList.map((item) => (
+              <li
+                key={item.id}
+                className="flex justify-between w-2/3 lg:w-1/3 mx-auto mt-2 rounded-md cursor-pointer group h-10 lg:hover:bg-red-300"
+              >
+                <div className="flex w-full items-center rounded-md pl-2">
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 ml-5 float-left cursor-pointer checked:bg-blue-600 checked:border-transparent"
+                    onChange={() => dispatch(completeTodo(item.id))}
+                  />
+                  <div
+                    className="pl-2 w-full"
+                    onClick={() =>
+                      handleListItemClick(item.id, item.description)
+                    }
+                  >
+                    {inputId === item.id ? (
+                      <input
+                        className="px-3 py-2 placeholder-gray-400 focus:outline-none text-gray-700 rounded text-sm w-full"
+                        value={inputValue}
+                        type="text"
+                        onKeyDown={(e) => handleKeyDown(e, item.description)}
+                        onBlur={() => handleInputSubmit(item.description)}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        autoFocus={true}
+                      />
+                    ) : (
+                      <span className="text-base text-gray-800">
+                        {item.description}
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <div
-                  className="pl-2 w-full"
-                  onClick={() => handleListItemClick(item.id, item.description)}
+                  className=" flex items-center bg-gray-700 lg:group-hover:opacity-100 lg:opacity-0 text-gray-300 m-2 p-2 rounded-md text-xs"
+                  onClick={() => dispatch(deleteTodo(item.id))}
                 >
-                  {inputId === item.id ? (
-                    <input
-                      className="px-3 py-2 placeholder-gray-400 focus:outline-none text-gray-700 rounded text-sm w-full"
-                      value={inputValue}
-                      type="text"
-                      onKeyDown={(e) => handleKeyDown(e, item.description)}
-                      onBlur={() => handleInputSubmit(item.description)}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      autoFocus={true}
-                    />
-                  ) : (
-                    <span className="text-base text-gray-800">
+                  Delete
+                </div>
+              </li>
+            ))}
+
+          {sortedCompletedList &&
+            sortedCompletedList.map((item) => (
+              <li
+                key={item.id}
+                className="flex justify-between w-2/3 lg:w-1/3 mx-auto mt-2 rounded-md cursor-pointer group h-10 lg:hover:bg-gray-300"
+              >
+                <div className="flex w-full items-center rounded-md pl-2">
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 ml-5 float-left cursor-pointer checked:bg-blue-600 checked:border-transparent"
+                    onChange={() => dispatch(uncompleteTodo(item.id))}
+                    checked
+                  />
+                  <div className="pl-2 w-full">
+                    <span className="text-base line-through text-gray-500">
                       {item.description}
                     </span>
-                  )}
+                  </div>
                 </div>
-              </div>
-              <div
-                className=" flex items-center bg-gray-700 lg:group-hover:opacity-100 lg:opacity-0 text-gray-300 m-2 p-2 rounded-md text-xs"
-                onClick={() => dispatch(deleteTodo(item.id))}
-              >
-                Delete
-              </div>
-            </li>
-          ))}
-
-        {sortedCompletedList &&
-          sortedCompletedList.map((item) => (
-            <li
-              key={item.id}
-              className="flex justify-between w-2/3 lg:w-1/3 mx-auto mt-2 rounded-md cursor-pointer group h-10 lg:hover:bg-gray-300"
-            >
-              <div className="flex w-full items-center rounded-md pl-2">
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 ml-5 float-left cursor-pointer checked:bg-blue-600 checked:border-transparent"
-                  onChange={() => dispatch(uncompleteTodo(item.id))}
-                  checked
-                />
-                <div className="pl-2 w-full">
-                  <span className="text-base line-through text-gray-500">
-                    {item.description}
-                  </span>
+                <div
+                  className=" flex items-center bg-gray-700 lg:group-hover:opacity-100 lg:opacity-0 text-gray-300 m-2 p-2 rounded-md text-xs"
+                  onClick={() => dispatch(deleteTodo(item.id))}
+                >
+                  Delete
                 </div>
-              </div>
-              <div
-                className=" flex items-center bg-gray-700 lg:group-hover:opacity-100 lg:opacity-0 text-gray-300 m-2 p-2 rounded-md text-xs"
-                onClick={() => dispatch(deleteTodo(item.id))}
-              >
-                Delete
-              </div>
-            </li>
-          ))}
+              </li>
+            ))}
+        </FlipMove>
       </ul>
     </div>
   );
